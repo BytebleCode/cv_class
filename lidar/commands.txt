@@ -1,0 +1,60 @@
+LIDAR - TF Luna Proximity Detector
+====================================
+
+LOCAL SETUP (Windows)
+---------------------
+1. Create venv and install dependencies:
+     cd cv_class/lidar
+     python -m venv venv
+     venv\Scripts\pip install pyserial
+
+2. Run:
+     venv\Scripts\python tf_luna.py
+
+3. Stop:
+     Ctrl+C
+
+Serial port auto-detects by platform:
+  Windows    -> COM3
+  Pi / Linux -> /dev/serial0
+Override SERIAL_PORT in tf_luna.py if yours differs.
+
+DATA OUTPUT
+-----------
+Prints ONLY when state changes (crossing the distance threshold):
+
+  lidar: Too close (23 cm)     — object entered the threshold zone
+  lidar: Clear (45 cm)         — object left the threshold zone
+
+No output while state stays the same.
+
+CONFIGURATION (edit top of tf_luna.py)
+--------------------------------------
+SERIAL_PORT    - auto-detected, override if needed
+BAUD_RATE      - default 115200 (TF Luna default)
+MIN_DISTANCE_CM - distance threshold in cm (default 30)
+
+RASPBERRY PI 5 SETUP
+---------------------
+1. Wire the TF Luna:
+     TF Luna TX  -> GPIO 15 (RXD / pin 10)
+     TF Luna RX  -> GPIO 14 (TXD / pin 8)
+     TF Luna 5V  -> pin 2 or 4
+     TF Luna GND -> pin 6
+
+2. Enable UART in /boot/firmware/config.txt:
+     dtparam=uart0=on
+
+3. Disable serial console so Linux doesn't grab the port:
+     sudo raspi-config
+       -> Interface Options -> Serial Port
+       -> Login shell over serial: NO
+       -> Serial hardware enabled: YES
+     Reboot.
+
+4. Create venv and run:
+     cd cv_class/lidar
+     python -m venv venv
+     source venv/bin/activate
+     pip install pyserial
+     python tf_luna.py

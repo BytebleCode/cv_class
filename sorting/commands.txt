@@ -1,0 +1,37 @@
+SORTING VISION - Color Detector
+================================
+
+LOCAL SETUP (Windows)
+---------------------
+1. Create venv and install dependencies:
+     cd cv_class/sorting
+     python -m venv venv
+     venv\Scripts\pip install opencv-python numpy
+
+2. Run:
+     venv\Scripts\python color_detector.py
+
+3. Quit:
+     Press 'q' in the camera window to stop.
+
+DATA OUTPUT
+-----------
+Prints ONLY when the dominant color changes:
+
+Format:
+  [SWITCH] COLOR  |  R: xx.x%  G: xx.x%  B: xx.x%
+
+Examples:
+  [SWITCH]   RED  |  R: 42.3%  G:  1.2%  B:  0.8%
+  [SWITCH]  BLUE  |  R:  0.5%  G:  2.1%  B: 35.7%
+  [SWITCH]  NONE  |  R:  1.0%  G:  0.9%  B:  0.4%
+
+- COLOR is RED, GREEN, BLUE, or NONE (when no color exceeds the 5% threshold).
+- Percentages show how much of the center ROI each color occupies.
+- No output while the dominant color stays the same.
+
+CONFIGURATION (edit top of color_detector.py)
+---------------------------------------------
+CENTER_CROP   - fraction of frame used as ROI (default 0.5 = center 50%)
+MIN_THRESHOLD - minimum % to count as dominant (default 5.0)
+COLOR_RANGES  - HSV bounds for red, green, blue detection
